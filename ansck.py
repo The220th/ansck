@@ -121,8 +121,10 @@ def num2letter(a : str) -> List[int]:
 	for c in a:
 		if(48 <= ord(c) <= 57):
 			res.append(int(c))
-		else:
+		elif(65 <= ord(c) <= 90):
 			res.append(ord(c)-55)
+		else:
+			return None
 	return res[::-1]
 
 def syntaxErrorMsg() -> str:
@@ -244,6 +246,9 @@ if __name__ == '__main__':
 			_initNum = withoutSuf[dot_pos+1:]
 			initNum_ = num2letter(initNum_)
 			_initNum = num2letter(_initNum)[::-1]
+			if(initNum_ == None or _initNum == None):
+				print("Use only uppercase latin letters")
+				exit()
 			NORMALFORM = 1
 		else:
 			if(withoutSuf.find("]") == -1):
@@ -261,13 +266,16 @@ if __name__ == '__main__':
 			_initNum = list(map(int, initNum[dot_pos+1:].split()))
 
 		if(max(_initNum) >= suf1 or max(initNum_) >= suf1):
-			print(f"{withoutSuf} cannot be in this numeral system: {suf1}. Because {max(initNum)} >= {suf1}")
+			print(f"{withoutSuf} cannot be in this numeral system: {suf1}. Because {max(_initNum)} >= {suf1} or {max(initNum_)} >= {suf1}")
 			exit()
 		process_dot(suf1, initNum_, _initNum, suf2)
 	else: # https://i.imgur.com/qqYQcEq.png
 		initNum = None
 		if(withoutSuf.find("[") == -1):
 			initNum = num2letter(withoutSuf)
+			if(initNum == None):
+				print("Use only uppercase latin letters")
+				exit()
 			NORMALFORM = 1
 		else:
 			if(withoutSuf.find("]") == -1):
